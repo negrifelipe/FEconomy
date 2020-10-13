@@ -48,6 +48,8 @@ namespace F.Economy.Database
 
 		public static void AddBalance(UnturnedPlayer player, int money)
 		{
+			int pmoney = GetBalance(player);
+
 			using (var db = new LiteDatabase($@"{System.Environment.CurrentDirectory}\Database\Economy.db", null))
 			{
 				var col = db.GetCollection<Account>("accounts");
@@ -56,17 +58,19 @@ namespace F.Economy.Database
 				var Cuenta = new Account
 				{
 					_id = $"{player.CSteamID}",
-					_money = GetBalance(player) + money
+					_money = pmoney + money
 				};
 
 				col.Update(Cuenta);
 
-				Economy.Instance.BalanceUpdate(player.CSteamID, money);
 			}
+			Economy.Instance.BalanceUpdate(player.CSteamID, money);
 		}
 
 		public static void RemoveBalance(UnturnedPlayer player, int money)
 		{
+			int pmoney = GetBalance(player);
+
 			using (var db = new LiteDatabase($@"{System.Environment.CurrentDirectory}\Database\Economy.db", null))
 			{
 				var col = db.GetCollection<Account>("accounts");
@@ -75,13 +79,12 @@ namespace F.Economy.Database
 				var Cuenta = new Account
 				{
 					_id = $"{player.CSteamID}",
-					_money = GetBalance(player) - money
+					_money = pmoney - money
 				};
 
 				col.Update(Cuenta);
-
-				Economy.Instance.BalanceUpdate(player.CSteamID, money);
 			}
+			Economy.Instance.BalanceUpdate(player.CSteamID, money);
 		}
 
 		public static void SetBalance(UnturnedPlayer player, int money)
@@ -97,8 +100,18 @@ namespace F.Economy.Database
 				};
 
 				col.Update(Cuenta);
+			}
 
-				Economy.Instance.BalanceUpdate(player.CSteamID, money);
+			Economy.Instance.BalanceUpdate(player.CSteamID, money);
+		}
+
+		public static void WipeAccounts()
+		{
+			using (var db = new LiteDatabase($@"{System.Environment.CurrentDirectory}\Database\Economy.db", null))
+			{
+				var col = db.GetCollection<Account>("accounts");
+
+				col.DeleteAll();
 			}
 		}
 
