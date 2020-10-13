@@ -22,7 +22,10 @@ namespace F.Economy.Commands
 
         public List<string> Aliases => new List<string>();
 
-        public List<string> Permissions => new List<string>();
+        public List<string> Permissions => new List<string>()
+        {
+            "f.pay"
+        };
 
         public void Execute(IRocketPlayer caller, string[] command)
         {
@@ -52,7 +55,7 @@ namespace F.Economy.Commands
                                     EconomyDB.AddBalance(player2, money);
                                     UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("pay_success"), money, Economy.Instance.Configuration.Instance.CurrencyName, player2.DisplayName));
                                     UnturnedChat.Say(player2, string.Format(Economy.Instance.Translate("pay_recieve"), money, Economy.Instance.Configuration.Instance.CurrencyName, player.DisplayName));
-                                }Console.log
+                                }
                                 else
                                 {
                                     UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
