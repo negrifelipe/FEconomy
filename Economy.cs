@@ -62,8 +62,20 @@ namespace F.Economy
 
             if (Configuration.Instance.MoneyUI == true)
             {
-                Instance.OnBalanceUpdated += Instance_OnBalanceUpdated;
+                if (Configuration.Instance.XpMode == false)
+                {
+                    Instance.OnBalanceUpdated += Instance_OnBalanceUpdated;
+                }
+                else
+                {
+                    UnturnedPlayerEvents.OnPlayerUpdateExperience += UnturnedPlayerEvents_OnPlayerUpdateExperience;
+                }
             }
+        }
+
+        private void UnturnedPlayerEvents_OnPlayerUpdateExperience(UnturnedPlayer player, uint experience)
+        {
+            EffectManager.sendUIEffectText(5456, player.CSteamID, true, "Dinero", $"${player.Experience}");
         }
 
         public delegate void PlayerBalanceUpdated(UnturnedPlayer player, int money);
@@ -90,7 +102,14 @@ namespace F.Economy
             if (Configuration.Instance.MoneyUI == true) 
             { 
                 EffectManager.sendUIEffect(Configuration.Instance.UIID, 5456, player.CSteamID, true);
-                EffectManager.sendUIEffectText(5456, player.CSteamID, true, "Dinero", $"${EconomyDB.GetBalance(player)}");
+                if (Configuration.Instance.XpMode == false)
+                {
+                    EffectManager.sendUIEffectText(5456, player.CSteamID, true, "Dinero", $"${EconomyDB.GetBalance(player)}");
+                }
+                else
+                {
+                    EffectManager.sendUIEffectText(5456, player.CSteamID, true, "Dinero", $"${player.Experience}");
+                }
             }
         }
 
@@ -104,9 +123,12 @@ namespace F.Economy
                 translationList.Add("err_ammount", "The ammount of money must be positive!");
                 translationList.Add("no_balance", "You don't have enough money!");
                 translationList.Add("pay_success", "You paid {0} {1} to {2}!");
+                translationList.Add("xppay_success", "You paid {0} to {1}!");
                 translationList.Add("pay_recieve", "You received {0} {1} from {2}!");
+                translationList.Add("xppay_recieve", "You received {0} from {1}!");
                 translationList.Add("mexange_success", "Successful exanged {0} {1} to: {2} Xp!");
                 translationList.Add("exange_success", "Successful exanged {0} experience to: {1} {2}!");
+                translationList.Add("xp_enabled", "Xp mode is enabled so you can't use this command!");
                 return translationList;
             }
         }

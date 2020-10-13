@@ -39,11 +39,15 @@ namespace F.Economy.Commands
                 case 1:
                     if (money > 0)
                     {
-                        if (money < EconomyDB.GetBalance(player) + 1);
+                        if (money < EconomyDB.GetBalance(player) + 1)
                         {
                             EconomyDB.RemoveBalance(player, money);
                             player.Experience = player.Experience + (uint)money;
                             UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("mexange_success"), money, Economy.Instance.Configuration.Instance.CurrencyName, money));
+                        }
+                        else
+                        {
+                            UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
                         }
                     }
                     else

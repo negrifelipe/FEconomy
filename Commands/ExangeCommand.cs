@@ -29,32 +29,39 @@ namespace F.Economy.Commands
 
         public void Execute(IRocketPlayer caller, string[] command)
         {
-            var player = (UnturnedPlayer)caller;
-            int money = Convert.ToInt32(command[0]);
-            switch (command.Length)
+            if (Economy.Instance.Configuration.Instance.XpMode == false)
             {
-                case 1:
-                    if (money > 0)
-                    {
-                        if (money < player.Experience + 1)
+                var player = (UnturnedPlayer)caller;
+                int money = Convert.ToInt32(command[0]);
+                switch (command.Length)
+                {
+                    case 1:
+                        if (money > 0)
                         {
-                            EconomyDB.AddBalance(player, money);
-                            player.Experience = player.Experience - (uint)money;
-                            UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("exange_success"), money, money,Economy.Instance.Configuration.Instance.CurrencyName));
+                            if (money < player.Experience + 1)
+                            {
+                                EconomyDB.AddBalance(player, money);
+                                player.Experience = player.Experience - (uint)money;
+                                UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("exange_success"), money, money, Economy.Instance.Configuration.Instance.CurrencyName));
+                            }
+                            else
+                            {
+                                UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
+                            }
                         }
                         else
                         {
-                            UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
+                            UnturnedChat.Say(caller, Economy.Instance.Translate("err_ammount"));
                         }
-                    }
-                    else
-                    {
-                        UnturnedChat.Say(caller, Economy.Instance.Translate("err_ammount"));
-                    }
-                    break;
-                default:
-                    UnturnedChat.Say(caller, Syntax);
-                    break;
+                        break;
+                    default:
+                        UnturnedChat.Say(caller, Syntax);
+                        break;
+                }
+            }
+            else
+            {
+                UnturnedChat.Say(caller, Economy.Instance.Translate("xp_enabled"));
             }
         }
     }

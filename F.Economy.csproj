@@ -66,7 +66,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\ApayCommand.cs" />
+    <Compile Include="Commands\ExangeCommand.cs" />
+    <Compile Include="Commands\MoneyExangeCommand.cs" />
+    <Compile Include="Commands\PayCommand.cs" />
     <Compile Include="Database\EconomyDB.cs" />
     <Compile Include="Economy.cs" />
     <Compile Include="EconomyConfiguration.cs" />

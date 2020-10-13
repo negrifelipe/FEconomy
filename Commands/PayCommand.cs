@@ -30,7 +30,6 @@ namespace F.Economy.Commands
         public void Execute(IRocketPlayer caller, string[] command)
         {
             var player = (UnturnedPlayer)caller;
-
             switch(command.Length)
             {
                 case 1:
@@ -49,16 +48,33 @@ namespace F.Economy.Commands
                             int money = Convert.ToInt32(command[1]);
                             if (money > 0)
                             {
-                                if (money < EconomyDB.GetBalance(player) + 1)
+                                if (Economy.Instance.Configuration.Instance.XpMode == false)
                                 {
-                                    EconomyDB.RemoveBalance(player, money);
-                                    EconomyDB.AddBalance(player2, money);
-                                    UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("pay_success"), money, Economy.Instance.Configuration.Instance.CurrencyName, player2.DisplayName));
-                                    UnturnedChat.Say(player2, string.Format(Economy.Instance.Translate("pay_recieve"), money, Economy.Instance.Configuration.Instance.CurrencyName, player.DisplayName));
+                                    if (money < EconomyDB.GetBalance(player) + 1)
+                                    {
+                                        EconomyDB.RemoveBalance(player, money);
+                                        EconomyDB.AddBalance(player2, money);
+                                        UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("pay_success"), money, Economy.Instance.Configuration.Instance.CurrencyName, player2.DisplayName));
+                                        UnturnedChat.Say(player2, string.Format(Economy.Instance.Translate("pay_recieve"), money, Economy.Instance.Configuration.Instance.CurrencyName, player.DisplayName));
+                                    }
+                                    else
+                                    {
+                                        UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
+                                    }
                                 }
                                 else
                                 {
-                                    UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
+                                    if (money < player.Experience + 1)
+                                    {
+                                        player.Experience = player.Experience - (uint)money;
+                                        player2.Experience = player.Experience + (uint)money;
+                                        UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("xppay_success"), money, player2.DisplayName));
+                                        UnturnedChat.Say(player2, string.Format(Economy.Instance.Translate("xppay_recieve"), money, player.DisplayName));
+                                    }
+                                    else
+                                    {
+                                        UnturnedChat.Say(caller, Economy.Instance.Translate("no_balance"));
+                                    }
                                 }
                             }
                             else
