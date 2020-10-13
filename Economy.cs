@@ -106,6 +106,7 @@ namespace F.Economy
                 translationList.Add("pay_success", "You paid {0} {1} to {2}!");
                 translationList.Add("pay_recieve", "You received {0} {1} from {2}!");
                 translationList.Add("mexange_success", "Successful exanged {0} {1} to: {2} Xp!");
+                translationList.Add("exange_success", "Successful exanged {0} experience to: {1} {2}!");
                 return translationList;
             }
         }
