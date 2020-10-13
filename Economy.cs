@@ -1,9 +1,12 @@
-﻿using F.Economy.Models;
+﻿using F.Economy.Database;
+using F.Economy.Models;
 using LiteDB;
 using Rocket.Core.Logging;
 using Rocket.Core.Plugins;
 using Rocket.Unturned;
+using Rocket.Unturned.Player;
 using SDG.Unturned;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +19,12 @@ namespace F.Economy
 {
     public class Economy : RocketPlugin<EconomyConfiguration>
     {
+        public static Economy Instance;
+
         protected override void Load()
         {
+            Instance = this;
+
             Logger.Log("FEconomy Loaded");
             
             if (!File.Exists($@"{Rocket.Core.Environment.LibrariesDirectory}\LiteDB.dll"))
@@ -47,11 +54,39 @@ namespace F.Economy
             }
 
             U.Events.OnPlayerConnected += Events_OnPlayerConnected;
+
+            if (Configuration.Instance.MoneyUI == true)
+            {
+                Instance.OnBalanceUpdated += Instance_OnBalanceUpdated;
+            }
         }
 
-        private void Events_OnPlayerConnected(Rocket.Unturned.Player.UnturnedPlayer player)
+        public delegate void PlayerBalanceUpdated(UnturnedPlayer player, int money);
+        public event PlayerBalanceUpdated OnBalanceUpdated;
+
+        private void Instance_OnBalanceUpdated(UnturnedPlayer player, int money)
+        {
+            EffectManager.sendUIEffectText(5456, player.CSteamID, true, "Dinero", $"{EconomyDB.GetBalance(player)}");
+        }
+
+        public void BalanceUpdate(CSteamID cSteamID, int money)
+        {
+            if (OnBalanceUpdated != null)
+            {
+                UnturnedPlayer player = UnturnedPlayer.FromCSteamID(cSteamID);
+                OnBalanceUpdated(player, money);
+            }
+        }
+
+        private void Events_OnPlayerConnected(UnturnedPlayer player)
         {
             Database.EconomyDB.NewAccount(player, Configuration.Instance.InitialMoney);
+
+            if (Configuration.Instance.MoneyUI == true) 
+            { 
+                EffectManager.sendUIEffect(Configuration.Instance.UIID, 5456, player.CSteamID, true);
+                EffectManager.sendUIEffectText(5456, player.CSteamID, true, "Dinero", $"{EconomyDB.GetBalance(player)}");
+            }
         }
     }
 }

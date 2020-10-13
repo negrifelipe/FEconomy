@@ -60,6 +60,8 @@ namespace F.Economy.Database
 				};
 
 				col.Update(Cuenta);
+
+				Economy.Instance.BalanceUpdate(player.CSteamID, money);
 			}
 		}
 
@@ -77,6 +79,8 @@ namespace F.Economy.Database
 				};
 
 				col.Update(Cuenta);
+
+				Economy.Instance.BalanceUpdate(player.CSteamID, money);
 			}
 		}
 
@@ -93,6 +97,8 @@ namespace F.Economy.Database
 				};
 
 				col.Update(Cuenta);
+
+				Economy.Instance.BalanceUpdate(player.CSteamID, money);
 			}
 		}
 
