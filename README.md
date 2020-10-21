@@ -1,5 +1,9 @@
-# FEconomy
+# FEconomy 
+[![Github All Releases](https://img.shields.io/github/downloads/01-Feli/FEconomy/total.svg)]()
+
 FEconomy is an unturned economy plugin that uses a NoSQL document store database.
+
+FPlugins Discord Support: https://discord.gg/4FF2548
 
 This plugin will have a lot of updates with a lot of features like taxes and other stuff.
 
