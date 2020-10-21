@@ -1,27 +1,19 @@
 ﻿using F.Economy.Models;
 using LiteDB;
-using Rocket.Core;
 using Rocket.Unturned.Player;
-using SDG.Unturned;
-using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace F.Economy.Database
 {
-    public class EconomyDB
-    {
+	public class EconomyDB
+	{
 		public static void CreateDatabase()
 		{
 			using (var db = new LiteDatabase($@"{System.Environment.CurrentDirectory}\Database\Economy.db", null))
 			{
 				var col = db.GetCollection<Account>("accounts");
 			}
+
 		}
 
 		public static void NewAccount(UnturnedPlayer player, int money)
@@ -61,8 +53,8 @@ namespace F.Economy.Database
 				};
 
 				col.Update(Cuenta);
-
 			}
+
 			Economy.Instance.BalanceUpdate(player.CSteamID, money);
 		}
 
@@ -83,8 +75,10 @@ namespace F.Economy.Database
 
 				col.Update(Cuenta);
 			}
+
 			Economy.Instance.BalanceUpdate(player.CSteamID, money);
 		}
+
 
 		public static void SetBalance(UnturnedPlayer player, int money)
 		{
@@ -112,6 +106,7 @@ namespace F.Economy.Database
 
 				col.DeleteAll();
 			}
+
 		}
 
 		public static int GetBalance(UnturnedPlayer player)
@@ -125,7 +120,55 @@ namespace F.Economy.Database
 
 				result = dinero._money;
 			}
+
 			return result;
+		}
+
+		public static bool AccountExist(UnturnedPlayer player)
+		{
+			bool result;
+
+			using (var db = new LiteDatabase($@"{System.Environment.CurrentDirectory}\Database\Economy.db", null))
+			{
+				var col = db.GetCollection<Account>("accounts");
+
+				var account = col.FindById($"{player.CSteamID}");
+
+				if (account != null)
+				{
+					result = true;
+					Logger.Log("New account registered");
+					return result;
+				}
+				else
+				{
+					result = false;
+				}
+			}
+			return result;
+		}
+
+		public static void PayTaxes(int money)
+		{
+			using (var db = new LiteDatabase($@"{System.Environment.CurrentDirectory}\Database\Economy.db", null))
+			{
+				var col = db.GetCollection<Account>("accounts");
+
+				var cuentas = col.FindAll();
+
+				foreach (Account account in cuentas)
+				{
+					if (money < account._money)
+					{
+						account._money -= money;
+					}
+					else
+					{
+						account._money = 0;
+					}
+					col.Update(account);
+				}
+			}
 		}
 	}
 }

@@ -3,9 +3,6 @@ using F.Economy.Database;
 using Rocket.Unturned.Player;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Rocket.Unturned.Chat;
 
 namespace F.Economy.Commands
@@ -30,7 +27,7 @@ namespace F.Economy.Commands
         public void Execute(IRocketPlayer caller, string[] command)
         {
             var player = (UnturnedPlayer)caller;
-            switch(command.Length)
+            switch (command.Length)
             {
                 case 1:
                     UnturnedChat.Say(caller, Syntax);
@@ -39,7 +36,7 @@ namespace F.Economy.Commands
                     UnturnedPlayer player2 = UnturnedPlayer.FromName(command[0]);
                     if (player2 != null)
                     {
-                        if(player2.Id == player.Id)
+                        if (player2.Id == player.Id)
                         {
                             UnturnedChat.Say(caller, Economy.Instance.Translate("pay_nopoint"));
                         }
@@ -70,6 +67,7 @@ namespace F.Economy.Commands
                                         player2.Experience = player.Experience + (uint)money;
                                         UnturnedChat.Say(caller, string.Format(Economy.Instance.Translate("xppay_success"), money, player2.DisplayName));
                                         UnturnedChat.Say(player2, string.Format(Economy.Instance.Translate("xppay_recieve"), money, player.DisplayName));
+                                        Logger.Log(string.Format(Economy.Instance.Translate("c_pay_success"), money, player2.DisplayName, caller.DisplayName));
                                     }
                                     else
                                     {
@@ -95,3 +93,4 @@ namespace F.Economy.Commands
         }
     }
 }
+

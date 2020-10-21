@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("F.Economy")]
+[assembly: AssemblyTitle("FEconomy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("F.Economy")]
+[assembly: AssemblyProduct("FEconomy")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // El siguiente GUID sirve como id. de typelib si este proyecto se expone a COM.
-[assembly: Guid("870a09be-ecd2-4be1-bbea-89cc0ae327bd")]
+[assembly: Guid("6171afd3-dfe9-4ec9-b041-276fcc680666")]
 
 // La información de versión de un ensamblado consta de los cuatro valores siguientes:
 //
