@@ -10,17 +10,33 @@ This plugin uses a workshop mod to display player balance. Mod: https://steamcom
 /pay <player> <ammount>
 /mexange <ammount>
 /exange <ammount>
+/balance
+/setbalance <player> <money>
+/uir
+/wipebal
 ```
 
 # Configuration File
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <EconomyConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <DownloadLibraries>false</DownloadLibraries>
-  <XpMode>false</XpMode>
-  <InitialMoney>10000</InitialMoney>
-  <CurrencyName>dolars</CurrencyName>
-  <MoneyUI>true</MoneyUI>
+  <DownloadLibraries>false</DownloadLibraries> This is for auto downloading libraries
+  <XpMode>false</XpMode> Here you can set the economy mode to xp
+  <Taxes>true</Taxes> Here you enable or disable taxes
+  <DisconectedPlayersTaxes>2000</DisconectedPlayersTaxes> Here is the taxes ammount for disconected players this only work if DisconectedPlayersPayTaxes = true
+  <DisconectedPlayersPayTaxes>false</DisconectedPlayersPayTaxes> Here you can enable taxes for disconected players
+  <InitialMoney>10000</InitialMoney> Initial money :D
+  <SalaryInterval>3060</SalaryInterval> Salary interval (Seconds)
+  <TaxesInterval>432000</TaxesInterval> Taxes interval (Seconds)
+  <CurrencyName>dolars</CurrencyName> Currency name
+  <MoneyUI>true</MoneyUI> Enable or disable monney ui
   <UIID>3624</UIID>
+  <Groups>
+    <Group> This is the list of gruop that contains salarys and taxes of every group
+      <GroupName>vip</GroupName>
+      <Salary>10000</Salary>
+      <Tax>2000</Tax>
+    </Group>
+  </Groups>
 </EconomyConfiguration>
 ```
